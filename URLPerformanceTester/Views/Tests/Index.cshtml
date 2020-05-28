@@ -1,0 +1,17 @@
+﻿@model string
+@{
+    ViewBag.Title = "Tests History";
+}
+<h1>Request performance Tester</h1>
+<div id="OverviewList">
+    @Html.Action("OverviewList", routeValues: new { id = Model })
+</div>
+<script>
+    $(document)
+        .ready(function() {
+            var url = "@Url.Action("OverviewList", routeValues: new {id = Model})";
+            $("#OverviewList").load(url);
+            setInterval(function() { $("#OverviewList").load(url); }, 3000);
+            $.ajaxSetup({ cache: false });
+        });
+</script>

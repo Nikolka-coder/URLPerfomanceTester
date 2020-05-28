@@ -1,0 +1,70 @@
+﻿@model URLPerformanceTester.ViewModels.RequestTestsSetDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@if(Model.UrLsTested != Model.UrlTestResults.Count){<meta http-equiv="refresh" content="3" />}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <td class="col-md-2">Creation time</td>
+            <td class="col-md-6">URL</td>
+            <td class="col-md-2">URL Count</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>@Model.CreationTime</th>
+            <th><a href="@Model.RequestUrl">@Model.RequestUrl</a></th>
+            <th> @Model.UrLsCount</th>
+        </tr>
+    </tbody>
+</table>
+
+<div id="chart" style="min-width: 310px; max-width: 1280px; height: 200px; margin: 0 auto"></div>
+
+<script>
+        $('#chart').highcharts({
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: null
+            },
+            xAxis: {
+                categories: ['Minimum', 'Maximum', 'Most results near'],
+                title: {
+                    text: null
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: "Time(ms)",
+                data: [@Model.MinTime, @Model.MaxTime, @Model.ModeTime]
+            }]
+        });
+</script>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <td  class="col-md-10">URL</td>
+        <td  class="col-md-1">Time</td>
+        <td  class="col-md-1">Status Code</td>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var urlTest in Model.UrlTestResults)
+    {
+        <tr>
+            <th><a href="@urlTest.Url">@urlTest.Url</a></th>
+            <th>@urlTest.Time</th>
+            <th>@urlTest.StatusCode.ToString() (@((int) urlTest.StatusCode))</th>
+        </tr>
+    }
+    </tbody>
+</table>
+
